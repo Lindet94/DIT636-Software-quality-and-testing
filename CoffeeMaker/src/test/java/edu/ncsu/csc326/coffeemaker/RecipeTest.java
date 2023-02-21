@@ -5,12 +5,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 public class RecipeTest {
 
     private CoffeeMaker cm;
     private Recipe r1;
+    private Recipe r2;
+    private Recipe r3;
 
     @Before
     public void setUp() throws Exception {
@@ -24,6 +27,23 @@ public class RecipeTest {
         r1.setAmtMilk("1");
         r1.setAmtSugar("1");
         r1.setPrice("50");
+
+        r2 = new Recipe();
+        r2.setName("Nespresso");
+        r2.setAmtChocolate("0");
+        r2.setAmtCoffee("3");
+        r2.setAmtMilk("1");
+        r2.setAmtSugar("1");
+        r2.setPrice("50");
+
+        r3 = new Recipe();
+        r3.setName("Nespresso");
+        r3.setAmtChocolate("0");
+        r3.setAmtCoffee("3");
+        r3.setAmtMilk("1");
+        r3.setAmtSugar("1");
+        r3.setPrice("50");
+
     }
 
     public void tearDown() throws Exception {
@@ -94,11 +114,12 @@ public class RecipeTest {
     }
 
     @Test
-    public void testTestSetName() {
+    public void testSetName() {
         r1.setName("Espresso");
         assertEquals("Espresso", r1.getName());
     }
 
+    @Test
     public void testGetPrice() {
         assertEquals(50, r1.getPrice());
     }
@@ -113,12 +134,21 @@ public class RecipeTest {
         assertEquals(40, r1.getPrice());
     }
 
-    public void testTestToString() {
+    @Test
+    public void testToString() {
+        assertEquals(r1.toString(), "Coffee");
     }
 
-    public void testTestHashCode() {
+    @Test
+    public void testHashCode() {
+        assertEquals(r2.hashCode(), r3.hashCode());
     }
 
-    public void testTestEquals() {
+    @Test
+    public void testEquals() {
+
+        r2.setName("Nespresso");
+        r3.setName("Nespresso");
+        assertTrue(r2.equals(r3));
     }
 }
