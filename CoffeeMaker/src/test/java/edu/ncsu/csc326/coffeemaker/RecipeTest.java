@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 
 public class RecipeTest {
@@ -14,6 +14,7 @@ public class RecipeTest {
     private Recipe r1;
     private Recipe r2;
     private Recipe r3;
+    private Recipe r4;
 
     @Before
     public void setUp() throws Exception {
@@ -150,5 +151,17 @@ public class RecipeTest {
         r2.setName("Nespresso");
         r3.setName("Nespresso");
         assertTrue(r2.equals(r3));
+        r2.setName("Coffee");
+        r3.setName("Nespresso");
+        assertFalse(r2.equals(r3));
+        r2.setName(null);
+        r3.setName("Nespresso");
+        assertFalse(r2.equals(r3));
+
+        assertNotNull(r3);
+        r4 = null;
+        assertNull(r4);
+
+        assertFalse(r3.equals(r4));
     }
 }
