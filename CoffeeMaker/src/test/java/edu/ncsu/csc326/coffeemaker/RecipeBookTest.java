@@ -82,6 +82,9 @@ public class RecipeBookTest {
         String result = rb.deleteRecipe(0);
         assertEquals("Cappuccino", result);
 
+        recipeArray = rb.getRecipes();
+        assertNull(recipeArray[0]);
+
         //Test to delete recipe that is not in Recipe book
         String nullTest = rb.deleteRecipe(1);
         assertNull(nullTest);
