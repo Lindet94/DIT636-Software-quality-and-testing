@@ -12,7 +12,7 @@ public class RecipeBookTest {
     private Recipe addRecipe;
     private Recipe recipeToDelete;
     private Recipe editRecipe;
-    private Recipe emptyRecipe;
+    private Recipe changedRecipe;
     private Recipe [] recipeArray;
     private Recipe nullRecipe;
 
@@ -45,7 +45,7 @@ public class RecipeBookTest {
         //Set up for editRecipe
         editRecipe = new Recipe();
         //Empty recipe to contain the edited recipe
-        emptyRecipe = new Recipe();
+        changedRecipe = new Recipe();
         // Null recipe to test on a recipe that is not in the recipe book
         nullRecipe = new Recipe();
         editRecipe.setName("Mocha");
@@ -55,9 +55,6 @@ public class RecipeBookTest {
         editRecipe.setAmtSugar("1");
         editRecipe.setPrice("20");
 
-    }
-
-    public void tearDown() throws Exception {
     }
 
     @Test
@@ -82,6 +79,7 @@ public class RecipeBookTest {
         String result = rb.deleteRecipe(0);
         assertEquals("Cappuccino", result);
 
+        // Make sure that the deleted recipe is gone from the list.
         recipeArray = rb.getRecipes();
         assertNull(recipeArray[0]);
 
@@ -92,26 +90,25 @@ public class RecipeBookTest {
     @Test
     public void testEditRecipe() {
         rb.addRecipe(editRecipe);
-        rb.editRecipe(0, emptyRecipe);
-
-        String newName = emptyRecipe.getName();
-        assertEquals("Mocha", newName);
 
         try {
-            emptyRecipe.setPrice("1");
-            emptyRecipe.setAmtCoffee("1");
-            emptyRecipe.setAmtMilk("1");
-            emptyRecipe.setAmtSugar("1");
-            emptyRecipe.setAmtChocolate("1");
+            changedRecipe.setPrice("1");
+            changedRecipe.setAmtCoffee("1");
+            changedRecipe.setAmtMilk("1");
+            changedRecipe.setAmtSugar("1");
+            changedRecipe.setAmtChocolate("1");
         } catch (RecipeException e) {
             throw new RuntimeException(e);
         }
+        rb.editRecipe(0, changedRecipe);
+        String name = changedRecipe.getName();
+        assertEquals("Mocha", name);
 
-        assertEquals(1, emptyRecipe.getPrice());
-        assertEquals(1, emptyRecipe.getAmtCoffee());
-        assertEquals(1, emptyRecipe.getAmtMilk());
-        assertEquals(1, emptyRecipe.getAmtSugar());
-        assertEquals(1, emptyRecipe.getAmtChocolate());
+        assertEquals(1, changedRecipe.getPrice());
+        assertEquals(1, changedRecipe.getAmtCoffee());
+        assertEquals(1, changedRecipe.getAmtMilk());
+        assertEquals(1, changedRecipe.getAmtSugar());
+        assertEquals(1, changedRecipe.getAmtChocolate());
 
         String nullTest = rb.editRecipe(2, nullRecipe);
         assertNull(nullTest);
