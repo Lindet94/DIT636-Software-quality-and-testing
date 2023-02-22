@@ -1,5 +1,6 @@
 package edu.ncsu.csc326.coffeemaker;
 
+import edu.ncsu.csc326.coffeemaker.exceptions.RecipeException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,15 +14,17 @@ public class RecipeBookTest {
     private Recipe editRecipe;
     private Recipe emptyRecipe;
     private Recipe [] recipeArray;
+    private Recipe nullRecipe;
 
 
     @Before
     public void setUp() throws Exception {
         //Setup for RecipeBook
         rb = new RecipeBook();
+        //Setup Recipe Array
         recipeArray = new Recipe[4];
 
-        //Set up for testRecipe
+        //Set up for testAddRecipe
         addRecipe = new Recipe();
         addRecipe.setName("Coffee");
         addRecipe.setAmtChocolate("0");
@@ -41,8 +44,10 @@ public class RecipeBookTest {
 
         //Set up for editRecipe
         editRecipe = new Recipe();
-        //Empty recipe
+        //Empty recipe to contain the edited recipe
         emptyRecipe = new Recipe();
+        // Null recipe to test on a recipe that is not in the recipe book
+        nullRecipe = new Recipe();
         editRecipe.setName("Mocha");
         editRecipe.setAmtChocolate("1");
         editRecipe.setAmtCoffee("2");
@@ -84,10 +89,28 @@ public class RecipeBookTest {
     @Test
     public void testEditRecipe() {
         rb.addRecipe(editRecipe);
-        String result = rb.editRecipe(0, emptyRecipe);
-        assertEquals("Mocha", result);
+        rb.editRecipe(0, emptyRecipe);
 
-        result = rb.editRecipe(2, emptyRecipe);
-        assertNull(result);
+        String newName = emptyRecipe.getName();
+        assertEquals("Mocha", newName);
+
+        try {
+            emptyRecipe.setPrice("1");
+            emptyRecipe.setAmtCoffee("1");
+            emptyRecipe.setAmtMilk("1");
+            emptyRecipe.setAmtSugar("1");
+            emptyRecipe.setAmtChocolate("1");
+        } catch (RecipeException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(1, emptyRecipe.getPrice());
+        assertEquals(1, emptyRecipe.getAmtCoffee());
+        assertEquals(1, emptyRecipe.getAmtMilk());
+        assertEquals(1, emptyRecipe.getAmtSugar());
+        assertEquals(1, emptyRecipe.getAmtChocolate());
+
+        String nullTest = rb.editRecipe(2, nullRecipe);
+        assertNull(nullTest);
     }
 }
