@@ -1,5 +1,6 @@
 package edu.ncsu.csc326.coffeemaker;
 
+import edu.ncsu.csc326.coffeemaker.exceptions.InventoryException;
 import edu.ncsu.csc326.coffeemaker.exceptions.RecipeException;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,12 +10,13 @@ import static org.junit.Assert.*;
 public class RecipeBookTest {
 
     private RecipeBook rb;
-    private Recipe addRecipe;
-    private Recipe recipeToDelete;
-    private Recipe editRecipe;
-    private Recipe changedRecipe;
+    private Recipe r1;
+    private Recipe r2;
+    private Recipe r3;
+    private Recipe r4;
+    private Recipe r5;
     private Recipe [] recipeArray;
-    private Recipe nullRecipe;
+
 
 
     @Before
@@ -25,92 +27,171 @@ public class RecipeBookTest {
         recipeArray = new Recipe[4];
 
         //Set up for testAddRecipe
-        addRecipe = new Recipe();
-        addRecipe.setName("Coffee");
-        addRecipe.setAmtChocolate("0");
-        addRecipe.setAmtCoffee("3");
-        addRecipe.setAmtMilk("0");
-        addRecipe.setAmtSugar("1");
-        addRecipe.setPrice("50");
+        r1 = new Recipe();
+        r1.setName("Coffee");
+        r1.setAmtChocolate("0");
+        r1.setAmtCoffee("3");
+        r1.setAmtMilk("0");
+        r1.setAmtSugar("1");
+        r1.setPrice("50");
 
         //Set up for recipeToDelete
-        recipeToDelete = new Recipe();
-        recipeToDelete.setName("Cappuccino");
-        recipeToDelete.setAmtChocolate("0");
-        recipeToDelete.setAmtCoffee("2");
-        recipeToDelete.setAmtMilk("0");
-        recipeToDelete.setAmtSugar("1");
-        recipeToDelete.setPrice("20");
+        r2 = new Recipe();
+        r2.setName("Cappuccino");
+        r2.setAmtChocolate("0");
+        r2.setAmtCoffee("2");
+        r2.setAmtMilk("0");
+        r2.setAmtSugar("1");
+        r2.setPrice("20");
 
         //Set up for editRecipe
-        editRecipe = new Recipe();
+        r3 = new Recipe();
         //Empty recipe to contain the edited recipe
-        changedRecipe = new Recipe();
+        r4 = new Recipe();
         // Null recipe to test on a recipe that is not in the recipe book
-        nullRecipe = new Recipe();
-        editRecipe.setName("Mocha");
-        editRecipe.setAmtChocolate("1");
-        editRecipe.setAmtCoffee("2");
-        editRecipe.setAmtMilk("0");
-        editRecipe.setAmtSugar("1");
-        editRecipe.setPrice("20");
+        r5 = new Recipe();
+        r3.setName("Mocha");
+        r3.setAmtChocolate("1");
+        r3.setAmtCoffee("2");
+        r3.setAmtMilk("0");
+        r3.setAmtSugar("1");
+        r3.setPrice("20");
 
     }
 
     @Test
     public void testGetRecipes() {
-        rb.addRecipe(addRecipe);
+        rb.addRecipe(r1);
         recipeArray = rb.getRecipes();
         assert(recipeArray != null);
     }
 
     @Test
     public void testAddRecipe() {
-        boolean result = rb.addRecipe(addRecipe);
+        boolean result = rb.addRecipe(r1);
         assertTrue(result);
+    }
 
+    @Test
+    public void testAddAlreadyInBookRecipe() {
         //Test if added recipe is already in the recipe book
-        result = rb.addRecipe(addRecipe);
+        rb.addRecipe(r1);
+        boolean result = rb.addRecipe(r1);
         assertFalse(result);
     }
     @Test
     public void testDeleteRecipe() {
-        rb.addRecipe(recipeToDelete);
+        rb.addRecipe(r2);
         String result = rb.deleteRecipe(0);
         assertEquals("Cappuccino", result);
 
         // Make sure that the deleted recipe is gone from the list.
         recipeArray = rb.getRecipes();
         assertNull(recipeArray[0]);
+    }
 
+    @Test
+    public void testDeleteRecipeNotInRecipeBook() {
         //Test to delete recipe that is not in Recipe book
         String nullTest = rb.deleteRecipe(1);
         assertNull(nullTest);
     }
+
     @Test
     public void testEditRecipe() {
-        rb.addRecipe(editRecipe);
+        rb.addRecipe(r3);
 
         try {
-            changedRecipe.setPrice("1");
-            changedRecipe.setAmtCoffee("1");
-            changedRecipe.setAmtMilk("1");
-            changedRecipe.setAmtSugar("1");
-            changedRecipe.setAmtChocolate("1");
+            r4.setPrice("1");
+            r4.setAmtCoffee("1");
+            r4.setAmtMilk("1");
+            r4.setAmtSugar("1");
+            r4.setAmtChocolate("1");
         } catch (RecipeException e) {
             throw new RuntimeException(e);
         }
-        rb.editRecipe(0, changedRecipe);
-        String name = changedRecipe.getName();
+        // Edit recipe r3
+        rb.editRecipe(0, r4);
+        String name = r4.getName();
         assertEquals("Mocha", name);
 
-        assertEquals(1, changedRecipe.getPrice());
-        assertEquals(1, changedRecipe.getAmtCoffee());
-        assertEquals(1, changedRecipe.getAmtMilk());
-        assertEquals(1, changedRecipe.getAmtSugar());
-        assertEquals(1, changedRecipe.getAmtChocolate());
+        assertEquals(1, r4.getPrice());
+        assertEquals(1, r4.getAmtCoffee());
+        assertEquals(1, r4.getAmtMilk());
+        assertEquals(1, r4.getAmtSugar());
+        assertEquals(1, r4.getAmtChocolate());
+    }
 
-        String nullTest = rb.editRecipe(2, nullRecipe);
+    @Test
+    public void testEditOnlyPrice() {
+        rb.addRecipe(r3);
+        try {
+            r4.setPrice("1");
+        } catch (RecipeException e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(1, r4.getPrice());
+    }
+
+    @Test
+    public void testEditOnlyCoffee() {
+        rb.addRecipe(r3);
+        try {
+            r4.setAmtCoffee("3");
+        } catch (RecipeException e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(3, r4.getAmtCoffee());
+    }
+
+    @Test
+    public void testEditOnlyMilk() {
+        rb.addRecipe(r3);
+        try {
+            r4.setAmtMilk("2");
+        } catch (RecipeException e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(2, r4.getAmtMilk());
+    }
+
+    @Test
+    public void testEditOnlySugar() {
+        rb.addRecipe(r3);
+        try {
+            r4.setAmtSugar("3");
+        } catch (RecipeException e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(3, r4.getAmtSugar());
+    }
+
+    @Test
+    public void testEditOnlySChocolate() {
+        rb.addRecipe(r3);
+        try {
+            r4.setAmtCoffee("5");
+        } catch (RecipeException e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(5, r4.getAmtCoffee());
+    }
+
+    @Test
+    public void testEditIncorrectProperty() {
+        rb.addRecipe(r3);
+        // Edit recipe r3
+        rb.editRecipe(0, r4);
+        Throwable exception = assertThrows(
+                RecipeException.class, () -> {
+                    r4.setAmtChocolate("-1"); // Should throw an InventoryException
+                }
+        );
+    }
+    @Test
+    public void testAddNullRecipe() {
+        String nullTest = rb.editRecipe(2, r5);
         assertNull(nullTest);
     }
+
 }
