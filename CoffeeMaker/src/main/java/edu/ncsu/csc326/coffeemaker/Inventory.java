@@ -248,4 +248,5 @@ public class Inventory {
     	buf.append("\n");
     	return buf.toString();
     }
+
 }
