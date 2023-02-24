@@ -57,7 +57,7 @@ public class RecipeBook {
 	public synchronized String deleteRecipe(int recipeToDelete) {
 		if (recipeArray[recipeToDelete] != null) {
 			String recipeName = recipeArray[recipeToDelete].getName();
-			recipeArray[recipeToDelete] = null;
+			recipeArray[recipeToDelete] = new Recipe();
 			return recipeName;
 		} else {
 			return null;
@@ -74,8 +74,7 @@ public class RecipeBook {
 	public synchronized String editRecipe(int recipeToEdit, Recipe newRecipe) {
 		if (recipeArray[recipeToEdit] != null) {
 			String recipeName = recipeArray[recipeToEdit].getName();
-			// Fixed line 78 since recipeName was not added to the edited (new) recipe.
-			newRecipe.setName(recipeName);
+			newRecipe.setName("");
 			recipeArray[recipeToEdit] = newRecipe;
 			return recipeName;
 		} else {
