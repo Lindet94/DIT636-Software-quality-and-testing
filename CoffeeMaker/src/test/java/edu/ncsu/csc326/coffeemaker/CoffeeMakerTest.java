@@ -92,7 +92,7 @@ public class CoffeeMakerTest {
         assertEquals("Coffee", result);
 
         // Make sure that the deleted recipe is gone from the list.
-        recipeArray = rb.getRecipes();
+        recipeArray = cm.getRecipes();
         assertNull(recipeArray[0]);
     }
 
@@ -128,7 +128,7 @@ public class CoffeeMakerTest {
             assertEquals(16, inventory.getCoffee());
     }
     @Test
-    public void testAddInventory() {
+    public void testAddIncorrectInventory() {
         Throwable exception = assertThrows(
                 InventoryException.class, () -> {
                     cm.addInventory("-1", "2", "0", "0"); // Should throw an InventoryException
@@ -191,16 +191,15 @@ public class CoffeeMakerTest {
 
     @Test
     public void testMakeCoffeeWithRecipeNotInRecipeBook() {
-        cm.addRecipe(r1);
         int result = cm.makeCoffee(1, 200);
         assertEquals(200, result);
     }
 
     @Test
     public void testGetRecipes() {
-        rb.addRecipe(r1);
+        cm.addRecipe(r1);
         recipeArray = cm.getRecipes();
-        assert(recipeArray != null);
+        assert(recipeArray[0] != null);
     }
 
 
