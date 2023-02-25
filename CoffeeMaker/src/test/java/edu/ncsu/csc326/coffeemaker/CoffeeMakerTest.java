@@ -14,6 +14,8 @@ public class CoffeeMakerTest {
     private Recipe r1;
     private Recipe r2;
     private Recipe r3;
+    private Recipe r4;
+    private Recipe r5;
     private CoffeeMaker cm;
 
     private Recipe [] recipeArray;
@@ -23,6 +25,7 @@ public class CoffeeMakerTest {
         rb = new RecipeBook();
         inventory = new Inventory();
         cm = new CoffeeMaker();
+        recipeArray = new Recipe[4];
 
         r1 = new Recipe();
         r1.setName("Coffee");
@@ -41,6 +44,23 @@ public class CoffeeMakerTest {
         r2.setPrice("50");
 
         r3 = new Recipe();
+        recipeArray[0] = r1;
+
+        r4 = new Recipe();
+        r4.setName("Mocha");
+        r4.setAmtChocolate("200");
+        r4.setAmtCoffee("200");
+        r4.setAmtMilk("200");
+        r4.setAmtSugar("200");
+        r4.setPrice("50");
+
+        r5 = new Recipe();
+        r5.setName("Coffee");
+        r5.setAmtChocolate("200");
+        r5.setAmtCoffee("200");
+        r5.setAmtMilk("200");
+        r5.setAmtSugar("200");
+        r5.setPrice("50");
 
     }
     @Test
@@ -50,7 +70,16 @@ public class CoffeeMakerTest {
     }
 
     @Test
-    public void testAddRecipeInRecipeBook() {
+    public void testAddRecipeWithSameName() {
+        boolean result = cm.addRecipe(r1);
+        assertTrue(result);
+
+        boolean result2 = cm.addRecipe(r5);
+        assertFalse(result2);
+    }
+
+    @Test
+    public void testAddRecipeInRecipeAlreadyInBook() {
         cm.addRecipe(r1);
         boolean result = cm.addRecipe(r1);
         assertFalse(result);
@@ -113,8 +142,66 @@ public class CoffeeMakerTest {
     }
     @Test
     public void testMakeCoffee() {
+        cm.addRecipe(r1);
+        int result = cm.makeCoffee(0, 200);
+        // cost of r1 is 50, should be 150 left.
+        assertEquals(150, result);
     }
+
+    @Test
+    public void testMakeCoffeeWithNegativeAmount() {
+        cm.addRecipe(r1);
+        int result = cm.makeCoffee(0, -100);
+        // cost of r1 is 50, should be 150 left.
+        assertEquals(-100, result);
+    }
+
+
+    @Test
+    public void testMakeCoffeeWithTooLittleFunds() {
+        cm.addRecipe(r1);
+        int result = cm.makeCoffee(0, 20);
+        // cost of r1 is 50, should be 20 left since 20 is too little money.
+        assertEquals(20, result);
+    }
+
+    @Test
+    public void testMakeCoffeeWith0Money() {
+        cm.addRecipe(r1);
+        int result = cm.makeCoffee(0, 0);
+        // cost of r1 is 50, should be 20 left since 20 is too little money.
+        assertEquals(0, result);
+    }
+
+    @Test
+    public void testMakeCoffeeWithExactFunds() {
+        cm.addRecipe(r1);
+        int result = cm.makeCoffee(0, 100);
+        // cost of r1 is 50, should be 20 left since 20 is too little money.
+        assertEquals(50, result);
+    }
+
+    @Test
+    public void testMakeCoffeeWithNotEnoughInventory() {
+        cm.addRecipe(r4);
+        int result = cm.makeCoffee(0, 50);
+        // cost of r1 is 50, should be 20 left since 20 is too little money.
+        assertEquals(50, result);
+    }
+
+    @Test
+    public void testMakeCoffeeWithRecipeNotInRecipeBook() {
+        cm.addRecipe(r1);
+        int result = cm.makeCoffee(1, 200);
+        assertEquals(200, result);
+    }
+
     @Test
     public void testGetRecipes() {
+        rb.addRecipe(r1);
+        recipeArray = cm.getRecipes();
+        assert(recipeArray != null);
     }
+
+
 }
