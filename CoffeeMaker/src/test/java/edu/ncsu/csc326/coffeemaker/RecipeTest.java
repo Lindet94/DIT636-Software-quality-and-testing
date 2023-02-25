@@ -10,7 +10,6 @@ import static org.junit.Assert.*;
 
 public class RecipeTest {
 
-    private CoffeeMaker cm;
     private Recipe r1;
     private Recipe r2;
     private Recipe r3;
@@ -18,7 +17,6 @@ public class RecipeTest {
 
     @Before
     public void setUp() throws Exception {
-        cm = new CoffeeMaker();
 
         //Set up for r1
         r1 = new Recipe();
@@ -64,6 +62,26 @@ public class RecipeTest {
         }
         assertEquals(2, r1.getAmtChocolate());
     }
+
+
+    @Test
+    public void testSetChocolateStringException() {
+        assertThrows(
+                RecipeException.class, () -> {
+                    r1.setAmtChocolate("a"); // Should throw an Exception
+                }
+        );
+    }
+
+    @Test
+    public void testSetChocolateNegativeIntException() {
+        assertThrows(
+                RecipeException.class, () -> {
+                    r1.setAmtChocolate("-1"); // Should throw an Exception
+                }
+        );
+    }
+
     @Test
     public void testGetAmtCoffee() {
         assertEquals(3, r1.getAmtCoffee());
@@ -71,12 +89,39 @@ public class RecipeTest {
 
     @Test
     public void testSetAmtCoffee() {
-        try{
+        try {
             r1.setAmtCoffee("2");
-        }catch(RecipeException e){
+        } catch (RecipeException e) {
             throw new RuntimeException(e);
         }
         assertEquals(2, r1.getAmtCoffee());
+    }
+
+    @Test
+    public void testSetCoffeeStringException() {
+        assertThrows(
+                RecipeException.class, () -> {
+                    r1.setAmtCoffee("a"); // Should throw an Exception
+                }
+        );
+    }
+
+    @Test
+    public void testSetCoffeeNegativeException() {
+        assertThrows(
+                RecipeException.class, () -> {
+                    r1.setAmtCoffee("-4"); // Should throw an Exception
+                }
+        );
+    }
+
+    @Test
+    public void testSetCoffeeNegativeIntException() {
+        assertThrows(
+                RecipeException.class, () -> {
+                    r1.setAmtCoffee("-4"); // Should throw an Exception
+                }
+        );
     }
 
     @Test
@@ -86,12 +131,30 @@ public class RecipeTest {
 
     @Test
     public void testSetAmtMilk() {
-        try{
+        try {
             r1.setAmtMilk("0");
-        } catch(RecipeException e){
+        } catch (RecipeException e) {
             throw new RuntimeException(e);
         }
         assertEquals(0, r1.getAmtMilk());
+    }
+
+    @Test
+    public void testSetMilkStringException() {
+        assertThrows(
+                RecipeException.class, () -> {
+                    r1.setAmtMilk("a"); // Should throw an Exception
+                }
+        );
+    }
+
+    @Test
+    public void testSetMilkNegativeException() {
+        assertThrows(
+                RecipeException.class, () -> {
+                    r1.setAmtMilk("-4"); // Should throw an Exception
+                }
+        );
     }
 
     @Test
@@ -101,12 +164,30 @@ public class RecipeTest {
 
     @Test
     public void testSetAmtSugar() {
-        try{
+        try {
             r1.setAmtSugar("5");
-        }catch(RecipeException e){
+        } catch (RecipeException e) {
             throw new RuntimeException(e);
         }
         assertEquals(5, r1.getAmtSugar());
+    }
+
+    @Test
+    public void testSetSugarStringException() {
+        assertThrows(
+                RecipeException.class, () -> {
+                    r1.setAmtSugar("a"); // Should throw an Exception
+                }
+        );
+    }
+
+    @Test
+    public void testSetSugarNegativeException() {
+        assertThrows(
+                RecipeException.class, () -> {
+                    r1.setAmtSugar("-4"); // Should throw an Exception
+                }
+        );
     }
 
     @Test
@@ -118,7 +199,25 @@ public class RecipeTest {
     public void testSetName() {
         r1.setName("Espresso");
         assertEquals("Espresso", r1.getName());
+
     }
+
+    @Test
+    public void testSetNameNull() {
+        r1.setName(null);
+        assertNotNull(r1.getName());
+    }
+    /*
+    @Test
+    public void testSetNameNullShouldThrowException() {
+        Throwable exception = assertThrows(
+                RecipeException.class, () -> {
+                    r1.setName(null); // Should throw an Exception
+                }
+        );
+    }
+
+     */
 
     @Test
     public void testGetPrice() {
@@ -127,12 +226,30 @@ public class RecipeTest {
 
     @Test
     public void testSetPrice() {
-        try{
+        try {
             r1.setPrice("40");
-        }catch(RecipeException e){
+        } catch (RecipeException e) {
             throw new RuntimeException(e);
         }
         assertEquals(40, r1.getPrice());
+    }
+
+    @Test
+    public void testSetPriceStringException() {
+        assertThrows(
+                RecipeException.class, () -> {
+                    r1.setPrice("a"); // Should throw an Exception
+                }
+        );
+    }
+
+    @Test
+    public void testSetPriceNegativeException() {
+        assertThrows(
+                RecipeException.class, () -> {
+                    r1.setPrice("-4"); // Should throw an Exception
+                }
+        );
     }
 
     @Test
@@ -146,22 +263,46 @@ public class RecipeTest {
     }
 
     @Test
-    public void testEquals() {
+    public void testEqualsSame() {
+        assertTrue(r1.equals(r1)); // Should return false when compared to an object of a different class
+    }
 
-        r2.setName("Nespresso");
-        r3.setName("Nespresso");
-        assertTrue(r2.equals(r3));
-        r2.setName("Coffee");
-        r3.setName("Nespresso");
-        assertFalse(r2.equals(r3));
-        r2.setName(null);
-        r3.setName("Nespresso");
-        assertFalse(r2.equals(r3));
+    @Test
+    public void testEqualsFalse() {
+        assertFalse(r1.equals(r3)); // Different name, should not be equal
+    }
 
-        assertNotNull(r3);
-        r4 = null;
-        assertNull(r4);
+    @Test
+    public void testEqualsnull() {
+        assertFalse(r1.equals(null)); // Should return false when compared to null
+    }
 
-        assertFalse(r3.equals(r4));
+    @Test
+    public void testEqualsObject() {
+        assertFalse(r1.equals(new Object())); // Should return false when compared to an object of a different class
+    }
+
+    @Test
+    public void testEqualsFirstAndSecondName() {
+        try {
+            Recipe recipe1 = new Recipe();
+            recipe1.setName("Espresso");
+            recipe1.setAmtChocolate("0");
+            recipe1.setAmtCoffee("3");
+            recipe1.setAmtMilk("1");
+            recipe1.setAmtSugar("1");
+            recipe1.setPrice("50");
+
+            Recipe recipe2 = new Recipe();
+            recipe2.setName(null);
+            recipe2.setAmtChocolate("0");
+            recipe2.setAmtCoffee("3");
+            recipe2.setAmtMilk("1");
+            recipe2.setAmtSugar("1");
+            recipe2.setPrice("50");
+            assertFalse(recipe2.equals(recipe1)); // Should return false when compared to an object of a different class
+        } catch (RecipeException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
