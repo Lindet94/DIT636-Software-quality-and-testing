@@ -73,6 +73,24 @@ public class RecipeBookTest {
     }
 
     @Test
+    public void testAddTwoRecipes() {
+        boolean result = rb.addRecipe(r1);
+        boolean resultTwo = rb.addRecipe(r2);
+        assertTrue(result);
+        assertTrue(resultTwo);
+    }
+
+    @Test
+    public void testAddFiveRecipes() {
+        rb.addRecipe(r1);
+        rb.addRecipe(r2);
+        rb.addRecipe(r3);
+        rb.addRecipe(r4);
+        boolean result = rb.addRecipe(r5);
+        assertFalse(result);
+    }
+
+    @Test
     public void testAddAlreadyInBookRecipe() {
         //Test if added recipe is already in the recipe book
         rb.addRecipe(r1);
