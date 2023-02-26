@@ -15,6 +15,7 @@ public class RecipeBookTest {
     private Recipe r3;
     private Recipe r4;
     private Recipe r5;
+
     private Recipe [] recipeArray;
 
 
@@ -68,6 +69,12 @@ public class RecipeBookTest {
 
     @Test
     public void testAddRecipe() {
+        boolean result = rb.addRecipe(r1);
+        assertTrue(result);
+    }
+
+    @Test
+    public void testAddNullRecipe() {
         boolean result = rb.addRecipe(r1);
         assertTrue(result);
     }
@@ -196,7 +203,7 @@ public class RecipeBookTest {
     }
 
     @Test
-    public void testEditIncorrectProperty() {
+    public void testEditIncorrectChocolate() {
         rb.addRecipe(r3);
         // Edit recipe r3
         rb.editRecipe(0, r4);
@@ -207,7 +214,18 @@ public class RecipeBookTest {
         );
     }
     @Test
-    public void testAddNullRecipe() {
+    public void testEditIncorrectMilk() {
+        rb.addRecipe(r3);
+        // Edit recipe r3
+        rb.editRecipe(0, r4);
+        Throwable exception = assertThrows(
+                RecipeException.class, () -> {
+                    r4.setAmtChocolate(null); // Should throw an InventoryException
+                }
+        );
+    }
+    @Test
+    public void testEditNullRecipe() {
         String nullTest = rb.editRecipe(2, r5);
         assertNull(nullTest);
     }
