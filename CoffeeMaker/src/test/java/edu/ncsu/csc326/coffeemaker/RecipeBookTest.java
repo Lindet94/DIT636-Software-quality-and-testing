@@ -63,7 +63,7 @@ public class RecipeBookTest {
     public void testGetRecipes() {
         rb.addRecipe(r1);
         recipeArray = rb.getRecipes();
-        assert(recipeArray != null);
+        assert(recipeArray[0] != null);
     }
 
     @Test
