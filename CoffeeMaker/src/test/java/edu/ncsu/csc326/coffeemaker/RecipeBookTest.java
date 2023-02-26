@@ -185,7 +185,7 @@ public class RecipeBookTest {
     }
 
     @Test
-    public void testEditOnlySChocolate() {
+    public void testEditOnlyChocolate() {
         rb.addRecipe(r3);
         try {
             r4.setAmtCoffee("5");
