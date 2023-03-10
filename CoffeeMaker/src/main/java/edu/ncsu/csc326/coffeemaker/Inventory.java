@@ -124,6 +124,9 @@ public class Inventory {
     	if(milk >= 0) {
     		Inventory.milk = milk;
     	}
+		/*
+		Change the if statement on line 124 from "milk >= 0" to "milk > 0". This will create the first useful mutant.
+		 */
     }
     
     /**

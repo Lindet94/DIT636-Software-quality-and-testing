@@ -5,7 +5,11 @@ public class RecipeBook {
 	/** Array of recipes in coffee maker*/
 	private Recipe [] recipeArray;
 	/** Number of recipes in coffee maker */
-	private final int NUM_RECIPES = 4; 
+	private final int NUM_RECIPES = 4;
+
+	/*
+	Set NUM_RECIPES to 0, this will create the second valid-but-not-useful mutant.
+	 */
 	
 	/**
 	 * Default constructor for a RecipeBook.
@@ -29,6 +33,9 @@ public class RecipeBook {
 		boolean exists = false;
 		//Check that recipe doesn't already exist in array
 		for (int i = 0; i < recipeArray.length; i++ ) {
+			/*
+				Set the conditional on line 31 to <= instead of <. This will create a valid-but-not-useful mutant.
+			 */
 			if (r.equals(recipeArray[i])) {
 				exists = true;
 			}

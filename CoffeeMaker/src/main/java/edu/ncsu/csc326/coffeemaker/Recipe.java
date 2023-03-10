@@ -41,6 +41,12 @@ public class Recipe {
     	} catch (NumberFormatException e) {
     		throw new RecipeException("Units of chocolate must be a positive integer");
     	}
+		/*
+		Remove catch on line 41 - 43 to make the code not compile (invalid mutant)
+		catch (NumberFormatException e) {
+    		throw new RecipeException("Units of chocolate must be a positive integer");
+    	}
+		 */
 		if (amtChocolate >= 0) {
 			this.amtChocolate = amtChocolate;
 		} else {
@@ -170,6 +176,9 @@ public class Recipe {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
+			/*
+			Set line 178 to return false instead of true. This will create the second useful mutant.
+		 	*/
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
@@ -178,6 +187,10 @@ public class Recipe {
 		if (name == null) {
 			if (other.name != null)
 				return false;
+			/*
+			We will never reach line 187 and so line 188 and 189 will not be covered. We set the return value to true on line
+			186, causing an equivalent mutant since to test can cover line 186.
+			 */
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
